@@ -2,13 +2,11 @@ import { useEffect, useState } from "preact/hooks";
 import Loading from "./Loading.tsx";
 type Ticket = {
   ticketid: string;
-  userid?: string;
   origin: string;
   destination: string;
   date: string;
   price: string;
-  coinsGained?: string;
-  vendido?: boolean;
+  available: number;
 };
 
 export default function TicketsComponent() {
@@ -182,6 +180,19 @@ if (loading){return <Loading />;}
                   })}
               />
             </div>
+            <div className="form-group">
+              <label>Cantidad</label>
+              <input
+                type="number"
+                step="1"
+                value={createform.available || ""}
+                onChange={(e) =>
+                  setCreateform({
+                    ...createform,
+                    available: parseFloat((e.target as HTMLInputElement).value),
+                  })}
+              />
+            </div>
             <div className="form-actions">
               <button
                 className="btn btn-cancel"
@@ -209,9 +220,7 @@ if (loading){return <Loading />;}
               <th>Destino</th>
               <th>Fecha</th>
               <th>Precio</th>
-              <th>Vendido</th>
-              <th>Comprador</th>
-              <th>Monedas</th>
+              <th>Disponibles</th>
               <th>Opciones</th>
             </tr>
           </thead>
@@ -224,9 +233,7 @@ if (loading){return <Loading />;}
                   <td>{ticket.destination}</td>
                   <td>{new Date(ticket.date).toLocaleString()}</td>
                   <td>{ticket.price}€</td>
-                  <td>{ticket.vendido ? "✅" : "❌"}</td>
-                  <td>{ticket.vendido ? ticket.userid : "-"}</td>
-                  <td>{ticket.vendido ? ticket.coinsGained : "-"}</td>
+                  <td>{ticket.available>0 ? ticket.available : "❌"}</td>
                   <td>
                     <button
                       className="btn btn-sm btn-secondary"
@@ -294,6 +301,19 @@ if (loading){return <Loading />;}
                               setUpdateform({
                                 ...updateform,
                                 price: (e.target as HTMLInputElement).value,
+                              })}
+                          />
+                        </div>
+                        <div className="form-group">
+                          <label>Disponibles</label>
+                          <input
+                            type="number"
+                            step="1"
+                            value={updateform.available || 0}
+                            onChange={(e) =>
+                              setUpdateform({
+                                ...updateform,
+                                available: parseFloat((e.target as HTMLInputElement).value),
                               })}
                           />
                         </div>

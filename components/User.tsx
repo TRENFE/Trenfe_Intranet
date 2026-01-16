@@ -224,7 +224,7 @@ export default function UserComponent() {
                   <td>{Users.email}</td>
                   <td>
                     <div>
-                      {Users.password}{" "}
+                      *******{" "}
                       <button
                         className="btn btn-sm btn-warning"
                         onClick={() => comprobarPassword(Users.password)}

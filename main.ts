@@ -2,6 +2,7 @@ import { App, staticFiles } from "fresh";
 import { define, type State } from "./utils.ts";
 import * as bcrypt from "https://deno.land/x/bcrypt@v0.4.1/mod.ts";
 import dotenv from "dotenv";
+import { a } from "./_fresh/server/server-entry.mjs";
 
 export const app = new App<State>();
 dotenv.config();
@@ -9,6 +10,7 @@ app.use(staticFiles());
 
 const adminmail = Deno.env.get("EMAIL") || "default@default.com";
 const adminpass = Deno.env.get("PASSWORD") || "default";
+
 app.post("/api/login", async (ctx) => {
   try {
     const formData = await ctx.req.formData();
@@ -73,7 +75,7 @@ app.post("/api/news", async (ctx) => {
     const match = cookie.match(/auth=([^;]+)/);
     const token = match?.[1];
 
-    if (!(newid && title && date && content && image)) {
+    if ((!newid && !title && !date && !content && !image)) {
       return new Response(null, {
         status: 302,
         headers: { Location: "/news" },
@@ -116,7 +118,7 @@ app.put("/api/news", async (ctx) => {
     const cookie = ctx.req.headers.get("cookie") || "";
     const match = cookie.match(/auth=([^;]+)/);
     const token = match?.[1];
-    if (!(newid && title && date && content && image)) {
+    if ((!newid && !title && !date && !content && !image)) {
       return new Response(null, {
         status: 302,
         headers: { Location: "/news" },
@@ -225,12 +227,12 @@ app.get("/api/tickets", async (ctx) => {
 });
 app.put("/api/tickets", async (ctx) => {
   try {
-    const { ticketid, origin, destination, date, price } = await ctx.req.json();
+    const { ticketid, origin, destination, date, price,available } = await ctx.req.json();
 
     const cookie = ctx.req.headers.get("cookie") || "";
     const match = cookie.match(/auth=([^;]+)/);
     const token = match?.[1];
-    if (!(ticketid && origin && destination && date && price)) {
+    if ((!ticketid && !origin && !destination && !date && !price && !available)) {
       return new Response(null, {
         status: 302,
         headers: { Location: "/tickets" },
@@ -244,7 +246,7 @@ app.put("/api/tickets", async (ctx) => {
           "Content-Type": "application/json",
           "Authorization": `${token}`,
         },
-        body: JSON.stringify({ ticketid, origin, destination, price, date }),
+        body: JSON.stringify({ ticketid, origin, destination, price, date,available }),
       },
     );
 
@@ -311,13 +313,13 @@ app.delete("/api/tickets", async (ctx) => {
 });
 app.post("/api/tickets", async (ctx) => {
   try {
-    const { ticketid, origin, destination, date, price } = await ctx.req.json();
+    const { ticketid, origin, destination, date, price,available } = await ctx.req.json();
 
     const cookie = ctx.req.headers.get("cookie") || "";
     const match = cookie.match(/auth=([^;]+)/);
     const token = match?.[1];
 
-    if (!(ticketid && origin && destination && date && price)) {
+    if ((!ticketid && !origin && !destination && !date && !price && !available)) {
       return new Response(null, {
         status: 302,
         headers: { Location: "/tickets" },
@@ -331,7 +333,7 @@ app.post("/api/tickets", async (ctx) => {
           "Content-Type": "application/json",
           "Authorization": `${token}`,
         },
-        body: JSON.stringify({ ticketid, origin, destination, price, date }),
+        body: JSON.stringify({ ticketid, origin, destination, price, date ,available }),
       },
     );
 
@@ -389,11 +391,10 @@ app.get("/api/users", async (ctx) => {
 app.put("/api/users", async (ctx) => {
   try {
     const { userid, name, email, password, coins } = await ctx.req.json();
-
     const cookie = ctx.req.headers.get("cookie") || "";
     const match = cookie.match(/auth=([^;]+)/);
     const token = match?.[1];
-    if (!(userid && name && email && password && coins)) {
+    if ((!userid && !name && !email && !password && !coins)) {
       return new Response(null, {
         status: 302,
         headers: { Location: "/user" },
@@ -473,12 +474,12 @@ app.delete("/api/users", async (ctx) => {
 });
 app.post("/api/users", async (ctx) => {
   try {
-    const { userid, name, email, password, coins } = await ctx.req.json();
+    const { userid, name, email, password } = await ctx.req.json();
 
     const cookie = ctx.req.headers.get("cookie") || "";
     const match = cookie.match(/auth=([^;]+)/);
     const token = match?.[1];
-    if (!(userid && name && email && password && coins)) {
+    if ((!userid && !name && !email && !password )) {
       return new Response(null, {
         status: 302,
         headers: { Location: "/user" },
@@ -492,7 +493,7 @@ app.post("/api/users", async (ctx) => {
           "Content-Type": "application/json",
           "Authorization": `${token}`,
         },
-        body: JSON.stringify({ userid, name, email, password, coins }),
+        body: JSON.stringify({ userid, name, email, password }),
       },
     );
 
