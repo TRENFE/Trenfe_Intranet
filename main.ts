@@ -2,7 +2,6 @@ import { App, staticFiles } from "fresh";
 import { define, type State } from "./utils.ts";
 import * as bcrypt from "https://deno.land/x/bcrypt@v0.4.1/mod.ts";
 import dotenv from "dotenv";
-import { a } from "./_fresh/server/server-entry.mjs";
 
 export const app = new App<State>();
 dotenv.config();
@@ -33,7 +32,7 @@ app.post("/api/login", async (ctx) => {
       status: 302,
       headers: {
         "Location": "/dashboard",
-        "Set-Cookie": "auth=admin-token; Path=/",
+        "Set-Cookie": "auth=renfeadmin; Path=/",
       },
     });
   } catch (_error) {
@@ -559,7 +558,7 @@ const checkAuth = define.middleware(async (ctx) => {
   const cookie = ctx.req.headers.get("cookie") || "";
   const match = cookie.match(/auth=([^;]+)/);
   const token = match?.[1];
-  if (token != "admin-token") {
+  if (token != "renfeadmin") {
     return new Response(null, {
       status: 302,
       headers: { Location: "/" },
@@ -571,7 +570,7 @@ const alreadylogged = define.middleware(async (ctx) => {
   const cookie = ctx.req.headers.get("cookie") || "";
   const match = cookie.match(/auth=([^;]+)/);
   const token = match?.[1];
-  if (token == "admin-token") {
+  if (token == "renfeadmin") {
     return new Response(null, {
       status: 302,
       headers: { Location: "/dashboard" },

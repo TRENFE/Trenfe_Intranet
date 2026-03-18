@@ -1,26 +1,19 @@
 # Trenfe Intranet
 
 Panel interno de administración (Fresh 2 + Vite) para gestionar noticias,
-tickets y usuarios.
-
-## Estado actual
-
-- `deno check main.ts`: falla en entorno actual por dependencias npm no
-  instaladas (`dotenv`) debido a `nodeModulesDir: manual`.
-- Solución: instalar dependencias antes de check/arranque.
+billetes y usuarios.
 
 ## Stack
 
 - Fresh 2
 - Preact
-- Vite
-- Proxy a `Trenfe_BackEnd`
+- Typescript
 
 ## Estructura
 
 - `main.ts`: endpoints `/api/*` para administración.
 - `routes/(index)/index.tsx`: login intranet.
-- `routes/(main)/*`: dashboard y CRUD de usuarios/noticias/tickets.
+- `routes/(main)/*`: dashboard y panel de usuarios/noticias/tickets.
 
 ## Variables de entorno
 
@@ -31,19 +24,11 @@ PASSWORD=
 
 ## Preparación (importante)
 
-Como usa `"nodeModulesDir": "manual"`, instala dependencias primero:
-
 ```bash
-npm install
+npm install; deno install
 ```
 
 ## Ejecución
-
-```bash
-deno task dev
-```
-
-Build + run:
 
 ```bash
 deno task build
@@ -89,5 +74,5 @@ deno task start
 
 ## Seguridad
 
-- Sesión por cookie de intranet.
+- Sesión por cookie.
 - Middleware de acceso para rutas privadas.

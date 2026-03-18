@@ -20,33 +20,51 @@ export default function LoginComponent() {
   }, []);
 
   return (
-    <div class="login-container" style="display: flex; justify-content: center;">
+    <div class="login-container">
+      <div class="login-side-panel">
+        <p class="eyebrow">Acceso interno</p>
+        <h1>TrenFe Intranet</h1>
+        <p class="login-copy">
+          Gestiona la plataforma si eres empleado interno
+        </p>
+        <div class="login-highlights">
+          <span>Gestion centralizada</span>
+          <span>Operaciones en tiempo real</span>
+        </div>
+      </div>
       <div class="login-box">
-        <img style="max-width:200px" src="https://cdn-icons-png.flaticon.com/512/8439/8439392.png" /> 
-        <h1>IntraNet</h1>
+        <img
+          class="login-logo"
+          src="https://cdn-icons-png.flaticon.com/512/8439/8439392.png"
+          alt="Logo intranet Trenfe"
+        />
+        <p class="eyebrow">Bienvenido</p>
+        <p class="login-form-copy">
+          Inicia sesion con tus credenciales de administrador.
+        </p>
         {error && <div class="error-box">{error}</div>}
         <form method="POST" action="/api/login">
           <div class="form-group">
             <label for="email">Email</label>
-            <input style="max-width:300px"
+            <input
               type="email"
               id="email"
               name="email"
               required
-              placeholder="admin@trenfe.com"
+              value="admin@trenfe.com"
             />
           </div>
           <div class="form-group">
             <label for="password">Contraseña</label>
-            <input style="max-width:300px"
+            <input
               type="password"
               id="password"
               name="password"
               required
-              placeholder="trenfeadmin1"
+              value="trenfeadmin1"
             />
           </div>
-          <button type="submit" class="btn btn-primary">
+          <button type="submit" class="btn btn-primary login-submit">
             Iniciar Sesión
           </button>
         </form>
